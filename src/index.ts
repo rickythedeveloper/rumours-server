@@ -5,9 +5,17 @@ export const PROD = (process.env.PORT) ? true : false;
 export const PORT = process.env.PORT || 8000;
 
 const app = express();
+
+const whitelist = ['http://localhost:3000', 'https://rtd-rumours-client.herokuapp.com'];
 const corsOptions = {
-	origin: 'http://localhost:3000',
-	optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+	origin: (origin: string | undefined, callback: (err: Error | null, origin?: boolean) => void) => {
+		if (origin === undefined || whitelist.indexOf(origin) === -1) {
+			callback(new Error('Not allowed by CORS'));
+			return;
+		} else {
+			callback(null, true);
+		}
+	},
 };
 
 app.use(cors(corsOptions));
