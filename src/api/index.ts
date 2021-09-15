@@ -20,5 +20,4 @@ export const apiPerform = async <DataType extends any>(
 	} catch (error) {
 		res.json({ isSuccessful: false, error: String(error) });
 	}
-}
-;
+};
