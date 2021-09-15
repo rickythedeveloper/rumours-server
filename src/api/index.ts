@@ -1,14 +1,14 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 
-interface APIResponse { isSuccessful: boolean }
-interface APISuccessNoData extends APIResponse { isSuccessful: true }
-interface APISuccessWithData<T> extends APIResponse { isSuccessful: true; result: T }
-interface APIError extends APIResponse { isSuccessful: false; error: string }
+// interface APIResponse { isSuccessful: boolean }
+// interface APISuccessNoData extends APIResponse { isSuccessful: true }
+// interface APISuccessWithData<T> extends APIResponse { isSuccessful: true; result: T }
+// interface APIError extends APIResponse { isSuccessful: false; error: string }
 
-export type GetResponse<T> = APISuccessWithData<T> | APIError;
-export type PostResponse<T> = APISuccessWithData<T> | APIError;
-export type PutResponse = APISuccessNoData | APIError;
-export type DeleteResponse = APISuccessNoData | APIError;
+// export type GetResponse<T> = APISuccessWithData<T> | APIError;
+// export type PostResponse<T> = APISuccessWithData<T> | APIError;
+// export type PutResponse = APISuccessNoData | APIError;
+// export type DeleteResponse = APISuccessNoData | APIError;
 
 export const apiPerform = async <DataType extends any>(
 	res: Response,
