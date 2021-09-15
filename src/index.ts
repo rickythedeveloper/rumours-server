@@ -3,6 +3,7 @@ import cors from 'cors';
 import { PORT, PROD } from './constants';
 import * as db from './database';
 import { Table } from './database/tables';
+import { apiPerform } from './api';
 
 const app = express();
 
@@ -26,13 +27,26 @@ app.get('/', (req, res) => {
 	res.send('Hello World');
 });
 
-app.get('/rumours', async (req, res) => {
-	try {
-		const rumours = await db.getRowsWithProperties(Table.posts, req.query);
-		res.json({ isSuccessful: true, data: rumours });
-	} catch (error) {
-		res.json({ isSuccessful: false, error: String(error) });
-	}
+app.get('/posts', async (req, res) => {
+	await apiPerform(res, () => {
+		return db.getRowsWithProperties(Table.posts, req.query);
+	});
+});
+app.post('/posts', async (req, res) => {
+	await apiPerform(res, () => {
+		return db.insertIntoTable(Table.posts, req.body);
+	});
+});
+
+app.get('/channels', async (req, res) => {
+	await apiPerform(res, () => {
+		return db.getRowsWithProperties(Table.channels, req.query);
+	});
+});
+app.post('/channels', async (req, res) => {
+	await apiPerform(res, () => {
+		return db.insertIntoTable(Table.channels, req.body);
+	});
 });
 
 app.get('/apitest', (req, res) => {

@@ -1,6 +1,6 @@
 import { Pool } from 'pg';
 import { PROD } from '../constants';
-import { Table, TableProperty } from './tables';
+import { OmitID, Table, TableProperty } from './tables';
 
 export const pool = PROD ?
 	new Pool({
@@ -26,4 +26,14 @@ export const getRowsWithProperties = async <T extends Table>(
 		const results = await pool.query<TableProperty<T>>(queryString, Object.values(properties));
 		return results.rows;
 	}
+};
+
+export const insertIntoTable = async <T extends Table>(
+	table: T,
+	properties: Partial<OmitID<TableProperty<T>>>,
+): Promise<TableProperty<T>> => {
+	const columns = Object.keys(properties).join(', ');
+	const placeholders = Object.keys(properties).map((_, index) => `$${index + 1}`).join(', ');
+	const addedItem = await pool.query<TableProperty<T>>(`INSERT INTO ${Table[table]} (${columns}) VALUES (${placeholders})`, Object.values(properties));
+	return addedItem.rows[0];
 };

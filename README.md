@@ -37,8 +37,16 @@ DELETE | `$ curl -X DELETE http://localhost:8000/`
 
 ## Database
 ## Database
-- channels
-	- name
-- rumours
-	- time
-	- text
+### channels
+Column | Type | Collation | Nullable | Default
+:-: | :-: | :-: | :-: | :-:
+id     | integer               |           | not null | nextval('channels_id_seq'::regclass)
+name   | character varying(50) |           | not null | 
+
+### rumours
+Column | Type | Collation | Nullable | Default
+:-: | :-: | :-: | :-: | :-:
+id         | integer                     |           | not null | nextval('rumours_id_seq'::regclass)
+time       | timestamp without time zone |           | not null | timezone('utc'::text, now())
+text       | character varying(140)      |           | not null | 
+channel_id | integer                     |           | not null | 
