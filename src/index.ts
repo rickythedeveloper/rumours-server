@@ -17,6 +17,10 @@ app.get('/', (req, res) => {
 	res.send('Hello World');
 });
 
+app.get('/apitest', (req, res) => {
+	res.json({ testJson: 'Hello World' });
+});
+
 app.listen(PORT, () => {
 	console.log(`Server started at http://localhost:${PORT}`);
 });
