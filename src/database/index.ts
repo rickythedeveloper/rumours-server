@@ -34,6 +34,7 @@ export const insertIntoTable = async <T extends Table>(
 ): Promise<TableProperty<T>> => {
 	const columns = Object.keys(properties).join(', ');
 	const placeholders = Object.keys(properties).map((_, index) => `$${index + 1}`).join(', ');
-	const addedItem = await pool.query<TableProperty<T>>(`INSERT INTO ${Table[table]} (${columns}) VALUES (${placeholders})`, Object.values(properties));
+	const queryString = `INSERT INTO ${Table[table]} (${columns}) VALUES (${placeholders}) RETURNING *`;
+	const addedItem = await pool.query<TableProperty<T>>(queryString, Object.values(properties));
 	return addedItem.rows[0];
 };

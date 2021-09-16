@@ -8,7 +8,7 @@ import { apiPerform } from './api';
 const app = express();
 
 if (PROD) {
-	const whitelist = ['http://localhost:3000', 'https://rtd-rumours-client.herokuapp.com'];
+	const whitelist = ['https://rtd-rumours-client.herokuapp.com'];
 	const corsOptions = {
 		origin: (origin: string | undefined, callback: (err: Error | null, origin?: boolean) => void) => {
 			if (origin === undefined || whitelist.indexOf(origin) === -1) {
@@ -20,8 +20,11 @@ if (PROD) {
 		},
 	};
 	app.use(cors(corsOptions));
+} else {
+	app.use(cors());
 }
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 app.get('/', (req, res) => {
 	res.send('Hello World');
